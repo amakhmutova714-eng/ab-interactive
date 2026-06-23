@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #ffffff;
+  color: #111111;
+  overflow-x: hidden;
+}
+
+/* Pixel art rendering for SVG elements */
+.pixel-art {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #FBEAF3;
+}
+::-webkit-scrollbar-thumb {
+  background: #F7D6E8;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #E8448A;
+}
+
+/* Pink text gradient */
+.gradient-text {
+  background: linear-gradient(135deg, #E8448A 0%, #F472B6 50%, #E8448A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Pink button gradient */
+.btn-pink {
+  background: linear-gradient(135deg, #E8448A 0%, #F472B6 100%);
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-pink:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(232, 68, 138, 0.35);
+}
+
+.btn-dark {
+  background: #111111;
+  color: white;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-dark:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Card hover */
+.card-hover {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.08);
+}
