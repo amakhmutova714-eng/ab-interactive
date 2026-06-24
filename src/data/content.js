@@ -74,7 +74,7 @@ export const content = {
       desc: 'A cozy life simulation and building game built from scratch on Roblox.',
       gradient: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%)',
       emoji: '🏙️',
-      image: '/project-brickton.png',
+      image: '/brickton-2.jpg',
       fullDesc: 'A full-scale Roblox roleplay and building game built from scratch, solo. Features 18+ custom systems: a custom Phone OS, building tools, cooking mechanics, vehicle integration, DataStore persistence, plot claim system, and more. 100% original Lua/Luau code — no free models or templates.',
       tags: ['Roblox Studio', 'Lua / Luau', 'DataStore', 'ModuleScripts', 'UI/UX'],
       stats: [
