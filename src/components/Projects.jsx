@@ -89,12 +89,6 @@ export default function Projects() {
               </motion.div>
             </motion.div>
 
-            {/* See more button */}
-            <motion.div variants={fadeUp} className="mt-4 flex justify-center">
-              <button className="btn-pink px-8 py-3.5 rounded-full text-sm font-bold flex items-center gap-2">
-                {content.projectsSeeMore} <span>→</span>
-              </button>
-            </motion.div>
           </motion.div>
         </div>
       </section>

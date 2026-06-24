@@ -71,7 +71,7 @@ export const contentKz = {
       type: 'Roblox Ойын',
       typeColor: '#E8448A',
       typeBg: '#FFF0F6',
-      desc: 'Roblox-та жасалған өмір симуляторы.',
+      desc: 'Roblox-та нөлден жасалған өмір симуляторы мен құрылыс ойыны.',
       gradient: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%)',
       emoji: '🏙️',
       image: '/project-brickton.png',
@@ -182,13 +182,13 @@ export const contentKz = {
         label: 'WhatsApp',
         icon: '💬',
         bg: 'linear-gradient(135deg, #25D366 0%, #128C7E 100%)',
-        href: 'https://wa.me/',
+        href: '',
       },
     ],
   },
 
   footer: {
-    copy: '© 2024 AB.interactive',
+    copy: '© 2026 AB.interactive',
     sub: '❤️ және кодпен жасалды',
   },
 }

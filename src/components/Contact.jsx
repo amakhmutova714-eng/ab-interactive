@@ -56,7 +56,7 @@ export default function Contact() {
 
           {/* Social links */}
           <div className="flex flex-col gap-3 mb-10">
-            {contact.links.map((link, i) => (
+            {contact.links.filter(link => link.href).map((link, i) => (
               <motion.a
                 key={i}
                 variants={fadeUp}
