@@ -1,21 +1,37 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export default function ProjectModal({ project, onClose }) {
+  const galleryRef = useRef(null)
+  const [activeSlide, setActiveSlide] = useState(0)
+
   useEffect(() => {
     if (project) {
       document.body.style.overflow = 'hidden'
+      setActiveSlide(0)
+      if (galleryRef.current) galleryRef.current.scrollLeft = 0
     } else {
       document.body.style.overflow = ''
     }
     return () => { document.body.style.overflow = '' }
   }, [project])
 
+  const handleScroll = () => {
+    if (!galleryRef.current) return
+    const { scrollLeft, offsetWidth } = galleryRef.current
+    setActiveSlide(Math.round(scrollLeft / offsetWidth))
+  }
+
+  const gallery = project?.gallery?.length
+    ? project.gallery
+    : project?.image
+    ? [project.image]
+    : []
+
   return (
     <AnimatePresence>
       {project && (
         <>
-          {/* Backdrop */}
           <motion.div
             className="fixed inset-0 bg-black/60 z-[100]"
             initial={{ opacity: 0 }}
@@ -24,9 +40,8 @@ export default function ProjectModal({ project, onClose }) {
             onClick={onClose}
           />
 
-          {/* Sheet */}
           <motion.div
-            className="fixed bottom-0 left-1/2 -translate-x-1/2 z-[101] bg-white rounded-t-3xl w-full overflow-hidden"
+            className="fixed bottom-0 left-1/2 -translate-x-1/2 z-[101] bg-white rounded-t-3xl w-full flex flex-col"
             style={{ maxWidth: '430px', maxHeight: '90dvh' }}
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
@@ -34,32 +49,90 @@ export default function ProjectModal({ project, onClose }) {
             transition={{ type: 'spring', damping: 28, stiffness: 280 }}
           >
             {/* Drag handle */}
-            <div className="flex justify-center pt-3 pb-1">
+            <div className="flex justify-center pt-3 pb-1 flex-shrink-0">
               <div className="w-10 h-1 bg-gray-200 rounded-full" />
             </div>
 
-            <div className="overflow-y-auto" style={{ maxHeight: 'calc(90dvh - 20px)' }}>
-              {/* Hero image */}
-              <div className="relative mx-4 mt-2 rounded-2xl overflow-hidden" style={{ height: '200px' }}>
-                <div
-                  className="absolute inset-0"
-                  style={{ background: project.gradient }}
-                />
-                <img
-                  src={project.image}
-                  alt={project.name}
-                  className="absolute inset-0 w-full h-full object-cover"
-                  style={{ objectFit: 'cover', objectPosition: 'center top' }}
-                />
-                <button
-                  onClick={onClose}
-                  className="absolute top-3 right-3 w-8 h-8 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center text-white text-xs font-bold"
-                >
-                  ✕
-                </button>
-              </div>
+            {/* Scrollable body */}
+            <div className="overflow-y-auto flex-1">
 
-              {/* Content */}
+              {/* Gallery */}
+              {gallery.length > 0 && (
+                <div className="relative">
+                  <div
+                    ref={galleryRef}
+                    onScroll={handleScroll}
+                    className="flex"
+                    style={{
+                      overflowX: 'auto',
+                      scrollSnapType: 'x mandatory',
+                      scrollbarWidth: 'none',
+                      msOverflowStyle: 'none',
+                      WebkitOverflowScrolling: 'touch',
+                    }}
+                  >
+                    {gallery.map((src, i) => (
+                      <div
+                        key={i}
+                        className="flex-shrink-0 w-full"
+                        style={{
+                          scrollSnapAlign: 'start',
+                          height: '240px',
+                          background: project.gradient,
+                        }}
+                      >
+                        <img
+                          src={src}
+                          alt={`${project.name} ${i + 1}`}
+                          className="w-full h-full"
+                          style={{ objectFit: 'cover', objectPosition: 'center top' }}
+                          loading={i === 0 ? 'eager' : 'lazy'}
+                        />
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Close button */}
+                  <button
+                    onClick={onClose}
+                    className="absolute top-3 right-3 w-8 h-8 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center text-white text-xs font-bold z-10"
+                  >
+                    ✕
+                  </button>
+
+                  {/* Slide counter badge */}
+                  {gallery.length > 1 && (
+                    <div className="absolute top-3 left-3 bg-black/40 backdrop-blur-sm rounded-full px-2.5 py-1 text-white text-xs font-bold z-10">
+                      {activeSlide + 1} / {gallery.length}
+                    </div>
+                  )}
+
+                  {/* Dot indicators */}
+                  {gallery.length > 1 && (
+                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                      {gallery.map((_, i) => (
+                        <button
+                          key={i}
+                          onClick={() => {
+                            galleryRef.current?.scrollTo({
+                              left: i * galleryRef.current.offsetWidth,
+                              behavior: 'smooth',
+                            })
+                          }}
+                          className="rounded-full transition-all duration-200"
+                          style={{
+                            width: i === activeSlide ? '18px' : '6px',
+                            height: '6px',
+                            background: i === activeSlide ? '#fff' : 'rgba(255,255,255,0.5)',
+                          }}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Info */}
               <div className="px-5 pt-4 pb-8">
                 {/* Title + badge */}
                 <div className="mb-4">
@@ -86,7 +159,7 @@ export default function ProjectModal({ project, onClose }) {
                 <p className="text-sm text-gray-600 leading-relaxed mb-5">{project.fullDesc}</p>
 
                 {/* Tech tags */}
-                <div className="flex flex-wrap gap-2 mb-6">
+                <div className="flex flex-wrap gap-2 mb-5">
                   {project.tags.map((tag, i) => (
                     <span
                       key={i}
@@ -98,7 +171,22 @@ export default function ProjectModal({ project, onClose }) {
                   ))}
                 </div>
 
-                {/* CTA button */}
+                {/* Video player */}
+                {project.video && (
+                  <div className="mb-5 rounded-2xl overflow-hidden bg-black">
+                    <video
+                      controls
+                      playsInline
+                      preload="none"
+                      className="w-full block"
+                      style={{ maxHeight: '220px' }}
+                    >
+                      <source src={project.video} type="video/mp4" />
+                    </video>
+                  </div>
+                )}
+
+                {/* CTA */}
                 {project.link ? (
                   <a
                     href={project.link}
