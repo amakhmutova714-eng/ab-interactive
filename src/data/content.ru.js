@@ -75,7 +75,7 @@ export const contentRu = {
       gradient: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%)',
       emoji: '🏙️',
       image: '/brickton-2.jpg',
-      fullDesc: 'Полноценная ролевая и строительная игра на Roblox, созданная с нуля в одиночку. 18+ кастомных систем: телефон ОС, строительство, готовка, машины, DataStore и другие. 100% оригинальный Lua/Luau код — без бесплатных моделей.',
+      fullDesc: 'Полноценная ролевая и строительная игра на Roblox, созданная с нуля в одиночку. 18 кастомных систем: телефон ОС, строительство, готовка, машины, DataStore и другие. 100% оригинальный Lua/Luau код — без бесплатных моделей.',
       tags: ['Roblox Studio', 'Lua / Luau', 'DataStore', 'ModuleScripts', 'UI/UX'],
       stats: [
         { value: '18', label: 'Систем' },

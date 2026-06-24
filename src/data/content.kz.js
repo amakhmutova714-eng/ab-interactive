@@ -75,7 +75,7 @@ export const contentKz = {
       gradient: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%)',
       emoji: '🏙️',
       image: '/brickton-2.jpg',
-      fullDesc: 'Roblox-та нөлден жасалған ролдік және құрылыс ойыны. 18+ жүйе бар: телефон ОС, құрылыс, тамақ пісіру, көлік, DataStore, учаске жүйесі және т.б. 100% түпнұсқа Lua/Luau коды — тегін модельсіз.',
+      fullDesc: 'Roblox-та нөлден жасалған ролдік және құрылыс ойыны. 18 жүйе бар: телефон ОС, құрылыс, тамақ пісіру, көлік, DataStore, учаске жүйесі және т.б. 100% түпнұсқа Lua/Luau коды — тегін модельсіз.',
       tags: ['Roblox Studio', 'Lua / Luau', 'DataStore', 'ModuleScripts', 'UI/UX'],
       stats: [
         { value: '18', label: 'Жүйе' },
