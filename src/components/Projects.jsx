@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import PixelAlien from './PixelAlien'
 import CharacterImage from './CharacterImage'
-import { content } from '../data/content'
+import { useLanguage } from '../context/LanguageContext'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -9,6 +9,7 @@ const fadeUp = {
 }
 
 export default function Projects() {
+  const { content } = useLanguage()
   return (
     <section id="projects" className="bg-white py-16 px-6 relative">
       <div className="max-w-[430px] mx-auto">
@@ -19,7 +20,7 @@ export default function Projects() {
           transition={{ staggerChildren: 0.12 }}
         >
           <motion.div variants={fadeUp} className="flex items-center gap-2 mb-8">
-            <h2 className="text-3xl font-black text-black-main">My Projects</h2>
+            <h2 className="text-3xl font-black text-black-main">{content.projectsTitle}</h2>
             <HeartIcon />
           </motion.div>
 
@@ -86,7 +87,7 @@ export default function Projects() {
           {/* See more button */}
           <motion.div variants={fadeUp} className="mt-4 flex justify-center">
             <button className="btn-pink px-8 py-3.5 rounded-full text-sm font-bold flex items-center gap-2">
-              See more projects <span>→</span>
+              {content.projectsSeeMore} <span>→</span>
             </button>
           </motion.div>
         </motion.div>

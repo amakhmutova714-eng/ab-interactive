@@ -3,7 +3,7 @@ import PixelAlien from './PixelAlien'
 import FloatingHeart from './FloatingHeart'
 import MinecraftBg from './MinecraftBg'
 import CharacterImage from './CharacterImage'
-import { content } from '../data/content'
+import { useLanguage } from '../context/LanguageContext'
 
 const floatingAliens = [
   { top: '18%', right: '8%', size: 4, delay: 0, color: '#E8448A' },
@@ -20,6 +20,7 @@ const floatingHearts = [
 ]
 
 export default function Hero() {
+  const { content } = useLanguage()
   const { hero } = content
 
   const scrollToPath = () => {

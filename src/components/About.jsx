@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import CharacterImage from './CharacterImage'
-import { content } from '../data/content'
+import { useLanguage } from '../context/LanguageContext'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -8,6 +8,7 @@ const fadeUp = {
 }
 
 export default function About() {
+  const { content } = useLanguage()
   const { about } = content
 
   return (
@@ -22,7 +23,7 @@ export default function About() {
           transition={{ staggerChildren: 0.12 }}
         >
           <motion.div variants={fadeUp} className="flex items-center gap-2 mb-5">
-            <h2 className="text-3xl font-black text-black-main">About Me</h2>
+            <h2 className="text-3xl font-black text-black-main">{about.title}</h2>
             <FloatingHeartInline />
           </motion.div>
 
@@ -57,7 +58,7 @@ export default function About() {
           transition={{ staggerChildren: 0.1 }}
         >
           <motion.div variants={fadeUp} className="flex items-center gap-2 mb-6">
-            <h2 className="text-3xl font-black text-black-main">What I Do</h2>
+            <h2 className="text-3xl font-black text-black-main">{about.whatIDoTitle}</h2>
             <FloatingHeartInline />
           </motion.div>
 

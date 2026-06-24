@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { content } from '../data/content'
+import { useLanguage } from '../context/LanguageContext'
+
+const LANGS = ['en', 'kz', 'ru']
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
+  const { content, lang, setLang } = useLanguage()
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20)
@@ -32,15 +35,35 @@ export default function Navbar() {
           </span>
         </div>
 
-        <button
-          onClick={() => scrollTo('contact')}
-          aria-label="Contact"
-          className="flex flex-col gap-[5px] p-1"
-        >
-          <span className="w-5 h-0.5 bg-black-main rounded-full block" />
-          <span className="w-5 h-0.5 bg-black-main rounded-full block" />
-          <span className="w-3.5 h-0.5 bg-black-main rounded-full block ml-auto" />
-        </button>
+        <div className="flex items-center gap-3">
+          {/* Language switcher */}
+          <div className="flex items-center gap-0.5 bg-gray-bg rounded-full px-1 py-1">
+            {LANGS.map((l) => (
+              <button
+                key={l}
+                onClick={() => setLang(l)}
+                className={`text-[11px] font-bold px-2.5 py-1 rounded-full transition-all duration-200 ${
+                  lang === l
+                    ? 'bg-pink-btn text-white shadow-sm'
+                    : 'text-gray-400 hover:text-gray-600'
+                }`}
+              >
+                {l.toUpperCase()}
+              </button>
+            ))}
+          </div>
+
+          {/* Menu / contact scroll */}
+          <button
+            onClick={() => scrollTo('contact')}
+            aria-label="Contact"
+            className="flex flex-col gap-[5px] p-1"
+          >
+            <span className="w-5 h-0.5 bg-black-main rounded-full block" />
+            <span className="w-5 h-0.5 bg-black-main rounded-full block" />
+            <span className="w-3.5 h-0.5 bg-black-main rounded-full block ml-auto" />
+          </button>
+        </div>
       </div>
 
       {/* Availability badge */}

@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import PixelAlien from './PixelAlien'
 import MinecraftBg from './MinecraftBg'
-import { content } from '../data/content'
+import { useLanguage } from '../context/LanguageContext'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -9,6 +9,7 @@ const fadeUp = {
 }
 
 export default function WhyWorkWithMe() {
+  const { content } = useLanguage()
   return (
     <section id="why" className="bg-pink-light py-16 px-6 relative overflow-hidden">
       {/* Decorative alien */}
@@ -24,7 +25,7 @@ export default function WhyWorkWithMe() {
           transition={{ staggerChildren: 0.1 }}
         >
           <motion.div variants={fadeUp} className="flex items-center gap-2 mb-8">
-            <h2 className="text-3xl font-black text-black-main">Why Work With Me?</h2>
+            <h2 className="text-3xl font-black text-black-main">{content.whyMeTitle}</h2>
             <HeartIcon />
           </motion.div>
 

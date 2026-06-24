@@ -14,6 +14,7 @@ export const content = {
 
   about: {
     title: 'About Me',
+    whatIDoTitle: 'What I Do',
     paragraphs: [
       "Hi! I'm Albina.",
       "I'm a software developer who creates Roblox experiences, websites, educational platforms, apps and interactive digital products.",
@@ -26,6 +27,8 @@ export const content = {
       { icon: '🤖', label: 'AI\nSolutions' },
     ],
   },
+
+  choosePathTitle: 'Choose Your Path',
 
   paths: [
     {
@@ -56,6 +59,9 @@ export const content = {
       services: ['Mobile Apps', 'MVP Development', 'UI / UX Design', 'Startup Prototypes'],
     },
   ],
+
+  projectsTitle: 'My Projects',
+  projectsSeeMore: 'See more projects',
 
   projects: [
     {
@@ -89,6 +95,8 @@ export const content = {
       emoji: '🛒',
     },
   ],
+
+  whyMeTitle: 'Why Work With Me?',
 
   whyMe: [
     {

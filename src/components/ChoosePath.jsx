@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import PixelAlien from './PixelAlien'
 import CharacterImage from './CharacterImage'
-import { content } from '../data/content'
+import { useLanguage } from '../context/LanguageContext'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -10,6 +10,7 @@ const fadeUp = {
 }
 
 export default function ChoosePath() {
+  const { content } = useLanguage()
   const [open, setOpen] = useState(null)
 
   const toggle = (id) => setOpen(open === id ? null : id)
@@ -32,7 +33,7 @@ export default function ChoosePath() {
           transition={{ staggerChildren: 0.12 }}
         >
           <motion.div variants={fadeUp} className="flex items-center gap-2 mb-8">
-            <h2 className="text-3xl font-black text-black-main">Choose Your Path</h2>
+            <h2 className="text-3xl font-black text-black-main">{content.choosePathTitle}</h2>
           </motion.div>
 
           <div className="flex flex-col gap-4">

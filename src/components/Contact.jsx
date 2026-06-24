@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import CharacterImage from './CharacterImage'
 import PixelAlien from './PixelAlien'
 import FloatingHeart from './FloatingHeart'
-import { content } from '../data/content'
+import { useLanguage } from '../context/LanguageContext'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -10,6 +10,7 @@ const fadeUp = {
 }
 
 export default function Contact() {
+  const { content } = useLanguage()
   const { contact, footer } = content
 
   return (
