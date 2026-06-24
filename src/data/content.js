@@ -78,7 +78,7 @@ export const content = {
       fullDesc: 'A full-scale Roblox roleplay and building game built from scratch, solo. Features 18+ custom systems: a custom Phone OS, building tools, cooking mechanics, vehicle integration, DataStore persistence, plot claim system, and more. 100% original Lua/Luau code — no free models or templates.',
       tags: ['Roblox Studio', 'Lua / Luau', 'DataStore', 'ModuleScripts', 'UI/UX'],
       stats: [
-        { value: '18+', label: 'Systems' },
+        { value: '18', label: 'Systems' },
         { value: '100%', label: 'Original' },
         { value: 'Solo', label: 'Dev' },
       ],

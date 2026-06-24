@@ -78,7 +78,7 @@ export const contentKz = {
       fullDesc: 'Roblox-та нөлден жасалған ролдік және құрылыс ойыны. 18+ жүйе бар: телефон ОС, құрылыс, тамақ пісіру, көлік, DataStore, учаске жүйесі және т.б. 100% түпнұсқа Lua/Luau коды — тегін модельсіз.',
       tags: ['Roblox Studio', 'Lua / Luau', 'DataStore', 'ModuleScripts', 'UI/UX'],
       stats: [
-        { value: '18+', label: 'Жүйе' },
+        { value: '18', label: 'Жүйе' },
         { value: '100%', label: 'Түпнұсқа' },
         { value: 'Жалғыз', label: 'Dev' },
       ],

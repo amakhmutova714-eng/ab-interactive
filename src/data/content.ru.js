@@ -78,7 +78,7 @@ export const contentRu = {
       fullDesc: 'Полноценная ролевая и строительная игра на Roblox, созданная с нуля в одиночку. 18+ кастомных систем: телефон ОС, строительство, готовка, машины, DataStore и другие. 100% оригинальный Lua/Luau код — без бесплатных моделей.',
       tags: ['Roblox Studio', 'Lua / Luau', 'DataStore', 'ModuleScripts', 'UI/UX'],
       stats: [
-        { value: '18+', label: 'Систем' },
+        { value: '18', label: 'Систем' },
         { value: '100%', label: 'Ориг.' },
         { value: 'Соло', label: 'Dev' },
       ],
