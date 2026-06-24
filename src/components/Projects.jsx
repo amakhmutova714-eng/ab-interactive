@@ -38,21 +38,7 @@ export default function Projects() {
                   style={{ minHeight: '100px' }}
                 >
                   {/* Thumbnail */}
-                  <div
-                    className="w-32 flex-shrink-0 flex items-center justify-center relative overflow-hidden"
-                    style={{ background: project.gradient, minHeight: '100px' }}
-                  >
-                    <img
-                      src={project.image}
-                      alt={project.name}
-                      className="w-full h-full p-2"
-                      style={{
-                        objectFit: 'contain',
-                        objectPosition: 'center',
-                        filter: 'drop-shadow(0 2px 10px rgba(0,0,0,0.35))',
-                      }}
-                    />
-                  </div>
+                  <GameCardThumb project={project} />
 
                   {/* Info */}
                   <div className="flex-1 p-4 flex flex-col justify-center">
@@ -102,6 +88,72 @@ export default function Projects() {
         onClose={() => setActiveProject(null)}
       />
     </>
+  )
+}
+
+function GameCardThumb({ project }) {
+  return (
+    <div
+      className="w-32 flex-shrink-0 relative overflow-hidden"
+      style={{ background: project.gradient, minHeight: '100px' }}
+    >
+      {/* Dot grid */}
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.13) 1px, transparent 1px)',
+          backgroundSize: '9px 9px',
+        }}
+      />
+
+      {/* Top-right glow blob */}
+      <div
+        className="absolute -top-5 -right-5 w-16 h-16 rounded-full blur-2xl"
+        style={{ background: 'rgba(255,255,255,0.3)' }}
+      />
+
+      {/* Bottom-left glow blob */}
+      <div
+        className="absolute -bottom-4 -left-4 w-12 h-12 rounded-full blur-xl"
+        style={{ background: 'rgba(255,255,255,0.15)' }}
+      />
+
+      {/* Screenshot frame */}
+      <div className="absolute inset-0 flex items-center justify-center p-3">
+        <div
+          className="w-full h-full rounded-xl overflow-hidden"
+          style={{
+            border: '1.5px solid rgba(255,255,255,0.35)',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.2)',
+          }}
+        >
+          <img
+            src={project.image}
+            alt={project.name}
+            className="w-full h-full"
+            style={{ objectFit: 'cover', objectPosition: 'center top' }}
+          />
+        </div>
+      </div>
+
+      {/* Emoji badge */}
+      <div
+        className="absolute top-1.5 left-1.5 z-10 w-6 h-6 rounded-md flex items-center justify-center text-xs leading-none"
+        style={{
+          background: 'rgba(255,255,255,0.22)',
+          backdropFilter: 'blur(6px)',
+          border: '1px solid rgba(255,255,255,0.3)',
+          boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
+        }}
+      >
+        {project.emoji}
+      </div>
+
+      {/* Sparkle stars */}
+      <span className="absolute top-1.5 right-2 z-10 text-white/80 font-bold" style={{ fontSize: '9px' }}>✦</span>
+      <span className="absolute bottom-2 right-1.5 z-10 text-white/50 font-bold" style={{ fontSize: '7px' }}>✦</span>
+      <span className="absolute bottom-4 left-1.5 z-10 text-white/40 font-bold" style={{ fontSize: '5px' }}>●</span>
+    </div>
   )
 }
 
