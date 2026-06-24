@@ -122,16 +122,13 @@ function GameCardThumb({ project }) {
       <div className="absolute inset-0 flex items-center justify-center p-3">
         <div
           className="w-full h-full rounded-xl overflow-hidden"
-          style={{
-            border: '1.5px solid rgba(255,255,255,0.35)',
-            boxShadow: '0 4px 16px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.2)',
-          }}
+          style={{ border: '1.5px solid rgba(255,255,255,0.3)' }}
         >
           <img
             src={project.image}
             alt={project.name}
             className="w-full h-full"
-            style={{ objectFit: 'cover', objectPosition: 'center top' }}
+            style={{ objectFit: 'cover', objectPosition: 'center center' }}
           />
         </div>
       </div>
