@@ -39,14 +39,18 @@ export default function Projects() {
                 >
                   {/* Thumbnail */}
                   <div
-                    className="w-32 flex-shrink-0 relative overflow-hidden"
+                    className="w-32 flex-shrink-0 flex items-center justify-center relative overflow-hidden"
                     style={{ background: project.gradient, minHeight: '100px' }}
                   >
                     <img
                       src={project.image}
                       alt={project.name}
-                      className="absolute inset-0 w-full h-full"
-                      style={{ objectFit: 'cover', objectPosition: 'center top' }}
+                      className="w-full h-full p-2"
+                      style={{
+                        objectFit: 'contain',
+                        objectPosition: 'center',
+                        filter: 'drop-shadow(0 2px 10px rgba(0,0,0,0.35))',
+                      }}
                     />
                   </div>
 
