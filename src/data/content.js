@@ -62,6 +62,7 @@ export const content = {
 
   projectsTitle: 'My Projects',
   projectsSeeMore: 'See more projects',
+  projectViewMore: 'View more',
 
   projects: [
     {

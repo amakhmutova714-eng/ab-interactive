@@ -69,7 +69,7 @@ export default function Projects() {
                       className="mt-3 text-left text-xs font-semibold flex items-center gap-1 transition-all duration-200 hover:gap-2"
                       style={{ color: project.typeColor }}
                     >
-                      View more <span>→</span>
+                      {content.projectViewMore} <span>→</span>
                     </button>
                   </div>
                 </motion.div>

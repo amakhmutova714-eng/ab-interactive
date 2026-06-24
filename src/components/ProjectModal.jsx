@@ -49,7 +49,7 @@ export default function ProjectModal({ project, onClose }) {
                   src={project.image}
                   alt={project.name}
                   className="absolute inset-0 w-full h-full object-cover"
-                  style={project.id === 'gotab' ? { objectPosition: 'center top', objectFit: 'contain', padding: '8px' } : { objectFit: 'cover' }}
+                  style={{ objectFit: 'cover', objectPosition: 'center top' }}
                 />
                 <button
                   onClick={onClose}

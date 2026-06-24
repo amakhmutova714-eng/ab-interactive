@@ -62,6 +62,7 @@ export const contentKz = {
 
   projectsTitle: 'Менің жобаларым',
   projectsSeeMore: 'Тағы қарау',
+  projectViewMore: 'Толығырақ',
 
   projects: [
     {

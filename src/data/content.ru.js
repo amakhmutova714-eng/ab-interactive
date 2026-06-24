@@ -62,6 +62,7 @@ export const contentRu = {
 
   projectsTitle: 'Мои проекты',
   projectsSeeMore: 'Смотреть ещё',
+  projectViewMore: 'Подробнее',
 
   projects: [
     {
