@@ -85,7 +85,7 @@ export default function ProjectModal({ project, onClose }) {
                           src={src}
                           alt={`${project.name} ${i + 1}`}
                           className="w-full h-full"
-                          style={{ objectFit: 'cover', objectPosition: 'center top' }}
+                          style={{ objectFit: 'contain', objectPosition: 'center' }}
                           loading={i === 0 ? 'eager' : 'lazy'}
                         />
                       </div>
