@@ -39,15 +39,15 @@ export default function Projects() {
                 >
                   {/* Thumbnail */}
                   <div
-                    className="w-32 flex-shrink-0 flex items-center justify-center relative overflow-hidden"
+                    className="w-32 flex-shrink-0 relative overflow-hidden"
                     style={{ background: project.gradient, minHeight: '100px' }}
                   >
-                    <span className="text-4xl" role="img" aria-label={project.name}>
-                      {project.emoji}
-                    </span>
-                    <div className="absolute bottom-2 right-2 opacity-40">
-                      <PixelAlien size={3} color="#ffffff" />
-                    </div>
+                    <img
+                      src={project.image}
+                      alt={project.name}
+                      className="absolute inset-0 w-full h-full"
+                      style={{ objectFit: 'cover', objectPosition: 'center top' }}
+                    />
                   </div>
 
                   {/* Info */}

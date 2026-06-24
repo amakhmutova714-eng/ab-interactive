@@ -105,6 +105,7 @@ export const contentRu = {
         { value: 'Полный', label: 'Дашборд' },
       ],
       gallery: ['/gotab-1.jpg', '/gotab-2.jpg', '/gotab-3.jpg'],
+      video: '/gotab-trailer.mp4',
       link: 'https://gotab.onrender.com',
       linkLabel: 'Открыть GoTAB →',
     },
