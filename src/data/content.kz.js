@@ -182,7 +182,7 @@ export const contentKz = {
         label: 'WhatsApp',
         icon: '💬',
         bg: 'linear-gradient(135deg, #25D366 0%, #128C7E 100%)',
-        href: '',
+        href: 'https://wa.me/77052506772',
       },
     ],
   },
