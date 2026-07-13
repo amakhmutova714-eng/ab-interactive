@@ -17,7 +17,7 @@ export default function Projects() {
   return (
     <>
       <section id="projects" className="bg-white py-16 px-6 relative">
-        <div className="max-w-[430px] md:max-w-5xl mx-auto">
+        <div className="max-w-[430px] mx-auto">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -29,7 +29,7 @@ export default function Projects() {
               <HeartIcon />
             </motion.div>
 
-            <div className="flex flex-col gap-4 md:grid md:grid-cols-2 md:gap-5">
+            <div className="flex flex-col gap-4">
               {content.projects.map((project) => (
                 <motion.div
                   key={project.id}

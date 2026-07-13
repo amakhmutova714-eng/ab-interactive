@@ -27,27 +27,12 @@ export default function Navbar() {
         scrolled ? 'bg-white/95 backdrop-blur-md shadow-sm' : 'bg-transparent'
       }`}
     >
-      <div className="max-w-[430px] md:max-w-5xl mx-auto px-5 md:px-8 py-4 flex items-center justify-between">
+      <div className="max-w-[430px] mx-auto px-5 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-lg" aria-hidden="true">🎮</span>
           <span className="font-bold text-black-main tracking-tight text-[15px]">
             {content.brand.name}
           </span>
-        </div>
-
-        {/* Desktop nav links */}
-        <div className="hidden md:flex items-center gap-8">
-          {['about', 'projects', 'path', 'why', 'contact'].map((id) => (
-            <button
-              key={id}
-              onClick={() => scrollTo(id)}
-              className="text-sm font-semibold text-gray-500 hover:text-pink-btn transition-colors duration-200 capitalize"
-            >
-              {id === 'path' ? (content.choosePathTitle?.split(' ')[0] ?? 'Services')
-                : id === 'why' ? (content.whyMeTitle?.split(' ')[0] ?? 'Why Me')
-                : id.charAt(0).toUpperCase() + id.slice(1)}
-            </button>
-          ))}
         </div>
 
         <div className="flex items-center gap-3">
@@ -68,29 +53,21 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Menu / contact scroll — mobile only */}
+          {/* Menu / contact scroll */}
           <button
             onClick={() => scrollTo('contact')}
             aria-label="Contact"
-            className="md:hidden flex flex-col gap-[5px] p-1"
+            className="flex flex-col gap-[5px] p-1"
           >
             <span className="w-5 h-0.5 bg-black-main rounded-full block" />
             <span className="w-5 h-0.5 bg-black-main rounded-full block" />
             <span className="w-3.5 h-0.5 bg-black-main rounded-full block ml-auto" />
           </button>
-
-          {/* Desktop contact button */}
-          <button
-            onClick={() => scrollTo('contact')}
-            className="hidden md:block btn-pink px-5 py-2 rounded-full text-sm font-bold"
-          >
-            {content.hero?.cta2?.replace('💬 ', '') ?? 'Contact Me'}
-          </button>
         </div>
       </div>
 
       {/* Availability badge */}
-      <div className="max-w-[430px] md:max-w-5xl mx-auto px-5 md:px-8 pb-2">
+      <div className="max-w-[430px] mx-auto px-5 pb-2">
         <div className="inline-flex items-center gap-1.5 bg-gray-bg rounded-full px-3 py-1">
           <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse block" />
           <span className="text-xs font-medium text-gray-600">{content.brand.available}</span>

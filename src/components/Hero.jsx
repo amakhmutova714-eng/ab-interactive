@@ -62,28 +62,25 @@ export default function Hero() {
       ))}
 
       {/* Main content */}
-      <div className="relative z-10 flex flex-col items-center flex-1 px-6 pt-32 pb-8
-                      md:grid md:grid-cols-2 md:gap-8 md:items-center
-                      md:max-w-5xl md:mx-auto md:w-full md:flex-none md:pt-40 md:pb-20 md:px-12">
-
+      <div className="relative z-10 flex flex-col items-center flex-1 px-6 pt-32 pb-8">
         {/* Heading */}
         <motion.div
-          className="w-full max-w-[380px] mb-2 md:max-w-none md:col-start-1 md:row-start-1"
+          className="w-full max-w-[380px] mb-2"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
         >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black leading-tight text-black-main">
+          <h1 className="text-4xl font-black leading-tight text-black-main">
             {hero.greeting}
           </h1>
-          <p className="mt-2 text-base md:text-lg text-gray-500 font-medium leading-relaxed">
+          <p className="mt-2 text-base text-gray-500 font-medium leading-relaxed">
             {hero.subtitle}
           </p>
         </motion.div>
 
-        {/* Character — right column on desktop, between heading and tagline on mobile */}
+        {/* Character */}
         <motion.div
-          className="relative my-4 md:my-0 md:col-start-2 md:row-start-1 md:row-span-3 md:flex md:items-center md:justify-end"
+          className="relative my-4"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
@@ -92,14 +89,16 @@ export default function Hero() {
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
           >
-            <CharacterImage variant="hero" className="h-72 md:h-[420px]" />
+            <CharacterImage variant="hero" className="h-72" />
           </motion.div>
+
+          {/* Glow beneath character */}
           <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-32 h-8 bg-pink-soft/60 blur-2xl rounded-full" />
         </motion.div>
 
         {/* Tagline pill */}
         <motion.div
-          className="mb-6 md:mb-0 md:col-start-1 md:row-start-2"
+          className="mb-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
@@ -111,21 +110,21 @@ export default function Hero() {
 
         {/* Buttons */}
         <motion.div
-          className="flex flex-col gap-3 w-full max-w-[320px] md:col-start-1 md:row-start-3 md:flex-row md:max-w-none"
+          className="flex flex-col gap-3 w-full max-w-[320px]"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.9 }}
         >
           <button
             onClick={scrollToPath}
-            className="btn-pink w-full md:w-auto md:px-8 py-4 rounded-full text-base font-bold flex items-center justify-center gap-2"
+            className="btn-pink w-full py-4 rounded-full text-base font-bold flex items-center justify-center gap-2"
           >
             {hero.cta1}
             <span>→</span>
           </button>
           <button
             onClick={scrollToContact}
-            className="btn-dark w-full md:w-auto md:px-8 py-4 rounded-full text-base font-bold flex items-center justify-center gap-2"
+            className="btn-dark w-full py-4 rounded-full text-base font-bold flex items-center justify-center gap-2"
           >
             {hero.cta2}
           </button>
