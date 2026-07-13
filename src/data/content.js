@@ -127,8 +127,8 @@ export const content = {
         { value: 'Jobs', label: 'Board' },
       ],
       gallery: ['/aulhub-1.jpg', '/aulhub-2.jpg', '/aulhub-3.jpg', '/aulhub-4.jpg', '/aulhub-5.jpg'],
-      link: null,
-      linkLabel: 'In Development',
+      link: 'https://aulhub.onrender.com',
+      linkLabel: 'Visit AulHub →',
     },
     {
       id: 'ab-marketplace',

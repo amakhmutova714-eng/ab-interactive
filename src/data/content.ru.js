@@ -127,8 +127,8 @@ export const contentRu = {
         { value: 'Работа', label: 'Доска' },
       ],
       gallery: ['/aulhub-1.jpg', '/aulhub-2.jpg', '/aulhub-3.jpg', '/aulhub-4.jpg', '/aulhub-5.jpg'],
-      link: null,
-      linkLabel: 'В разработке',
+      link: 'https://aulhub.onrender.com',
+      linkLabel: 'Открыть AulHub →',
     },
     {
       id: 'ab-marketplace',
