@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AB Chat Admin</title>
+<script type="module">
+  // ── Firebase config (same as .env.local values) ──────────────
+  // Fill in your values here after setting up Firebase project
+  const FIREBASE_CONFIG = {
+    apiKey:            '',
+    authDomain:        '',
+    databaseURL:       '',
+    projectId:         '',
+    storageBucket:     '',
+    messagingSenderId: '',
+    appId:             '',
+  }
+  const ADMIN_PASS = 'albina2026'  // Change this to your own password
+
+  // ── Firebase SDK (modular) ───────────────────────────────────
+  import { initializeApp }                           from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js'
+  import { getDatabase, ref, onValue, push, update } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js'
+
+  // ── Auth ─────────────────────────────────────────────────────
+  const stored = localStorage.getItem('ab_admin_auth')
+  if (stored !== ADMIN_PASS) {
+    const pw = prompt('Кілтсөз / Пароль:')
+    if (pw !== ADMIN_PASS) { document.body.innerHTML = '<p style="padding:40px;font-family:sans-serif;color:red">Қате кілтсөз</p>'; throw new Error('auth') }
+    localStorage.setItem('ab_admin_auth', pw)
+  }
+
+  // ── Init ─────────────────────────────────────────────────────
+  const app = initializeApp(FIREBASE_CONFIG)
+  const db  = getDatabase(app)
+
+  // ── State ────────────────────────────────────────────────────
+  let activeChatId = null
+  let unsubMessages = null
+
+  // ── Render chat list ─────────────────────────────────────────
+  onValue(ref(db, 'chats'), (snap) => {
+    const list = document.getElementById('chat-list')
+    list.innerHTML = ''
+    let count = 0
+    snap.forEach((child) => {
+      const chat = child.val()
+      if (chat.status === 'closed') return
+      count++
+      const btn = document.createElement('button')
+      btn.className = 'chat-item' + (chat.status === 'waiting' ? ' waiting' : ' live')
+      btn.innerHTML = `
+        <span class="badge">${chat.status === 'waiting' ? '⏳' : '🟢'}</span>
+        <span class="info">
+          <b>${chat.site ?? 'site'}</b>
+          <small>${chat.lang?.toUpperCase() ?? '?'} · ${new Date(chat.startedAt).toLocaleTimeString()}</small>
+        </span>
+      `
+      btn.onclick = () => openChat(child.key, chat)
+      list.appendChild(btn)
+    })
+    if (count === 0) list.innerHTML = '<p class="empty">Белсенді чаттар жоқ</p>'
+  })
+
+  // ── Open a chat ───────────────────────────────────────────────
+  function openChat(chatId, meta) {
+    activeChatId = chatId
+    document.getElementById('panel-title').textContent = `${meta.site ?? ''} · ${meta.lang?.toUpperCase() ?? ''}`
+
+    if (unsubMessages) { unsubMessages(); unsubMessages = null }
+
+    const msgArea = document.getElementById('msg-area')
+    msgArea.innerHTML = ''
+
+    unsubMessages = onValue(ref(db, `chats/${chatId}/messages`), (snap) => {
+      msgArea.innerHTML = ''
+      snap.forEach((c) => {
+        const m = c.val()
+        const div = document.createElement('div')
+        div.className = 'msg ' + m.from
+        div.textContent = m.text
+        msgArea.appendChild(div)
+      })
+      msgArea.scrollTop = msgArea.scrollHeight
+    })
+
+    // If waiting → mark as live (operator joined)
+    if (meta.status === 'waiting') {
+      update(ref(db, `chats/${chatId}`), { status: 'live' })
+    }
+
+    document.getElementById('chat-panel').style.display = 'flex'
+    document.getElementById('inp').focus()
+  }
+
+  // ── Send ──────────────────────────────────────────────────────
+  window.sendOp = function () {
+    if (!activeChatId) return
+    const inp = document.getElementById('inp')
+    const text = inp.value.trim()
+    if (!text) return
+    inp.value = ''
+    push(ref(db, `chats/${activeChatId}/messages`), { from: 'operator', text, ts: Date.now() })
+  }
+
+  window.closeChat = function () {
+    if (!activeChatId) return
+    update(ref(db, `chats/${activeChatId}`), { status: 'closed' })
+    if (unsubMessages) { unsubMessages(); unsubMessages = null }
+    activeChatId = null
+    document.getElementById('chat-panel').style.display = 'none'
+  }
+
+  document.getElementById('inp').addEventListener('keydown', (e) => { if (e.key === 'Enter') window.sendOp() })
+</script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f9f5ff; min-height: 100vh; display: flex; flex-direction: column; }
+  header { background: linear-gradient(135deg,#FF4FA3,#a855f7); color: #fff; padding: 16px 20px; font-size: 18px; font-weight: 700; }
+  header small { font-size: 12px; opacity: .7; margin-left: 8px; }
+
+  #main { display: flex; flex: 1; overflow: hidden; max-height: calc(100vh - 56px); }
+
+  /* Chat list */
+  #chat-list { width: 280px; min-width: 200px; border-right: 1px solid #e8d8ff; overflow-y: auto; background: #fff; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .chat-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; border: 1.5px solid #e8d8ff; background: #fff; cursor: pointer; text-align: left; width: 100%; transition: background .15s; }
+  .chat-item:hover { background: #faf0ff; }
+  .chat-item.waiting { border-color: #FF4FA3; }
+  .chat-item.live    { border-color: #25D366; }
+  .badge { font-size: 20px; }
+  .info { display: flex; flex-direction: column; gap: 2px; }
+  .info b { font-size: 13px; }
+  .info small { font-size: 11px; color: #888; }
+  .empty { color: #aaa; font-size: 13px; padding: 20px; text-align: center; }
+
+  /* Chat panel */
+  #chat-panel { flex: 1; display: none; flex-direction: column; }
+  #panel-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid #e8d8ff; background: #fff; }
+  #panel-title { font-weight: 700; font-size: 14px; }
+  #close-btn { background: #fee2e2; border: none; border-radius: 8px; padding: 6px 12px; font-size: 12px; font-weight: 700; color: #ef4444; cursor: pointer; }
+  #msg-area { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; background: #f9f5ff; }
+
+  .msg { padding: 8px 12px; border-radius: 12px; max-width: 80%; font-size: 13px; white-space: pre-line; }
+  .msg.user     { background: #fff; border: 1px solid #ede4ff; align-self: flex-start; border-radius: 12px 12px 12px 3px; }
+  .msg.bot      { background: #f0e8ff; align-self: flex-start; border-radius: 12px 12px 12px 3px; color: #555; font-style: italic; }
+  .msg.operator { background: #FF4FA3; color: #fff; align-self: flex-end; border-radius: 12px 12px 3px 12px; }
+
+  #input-row { display: flex; gap: 8px; padding: 10px 12px; background: #fff; border-top: 1px solid #e8d8ff; }
+  #inp { flex: 1; border: 1.5px solid #e8d8ff; border-radius: 12px; padding: 8px 12px; font-size: 13px; outline: none; font-family: inherit; }
+  #send-btn { background: linear-gradient(135deg,#FF4FA3,#a855f7); color: #fff; border: none; border-radius: 12px; padding: 0 18px; font-size: 16px; cursor: pointer; }
+</style>
+</head>
+<body>
+<header>AB Chat Admin <small>operator panel</small></header>
+<div id="main">
+  <div id="chat-list"><p class="empty">Жүктеліп жатыр...</p></div>
+  <div id="chat-panel">
+    <div id="panel-header">
+      <span id="panel-title"></span>
+      <button id="close-btn" onclick="closeChat()">Чатты жабу</button>
+    </div>
+    <div id="msg-area"></div>
+    <div id="input-row">
+      <input id="inp" placeholder="Хабарлама жаз..."/>
+      <button id="send-btn" onclick="sendOp()">➤</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
