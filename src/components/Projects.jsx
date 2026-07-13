@@ -121,15 +121,21 @@ function GameCardThumb({ project }) {
       {/* Screenshot frame */}
       <div className="absolute inset-0 flex items-center justify-center p-3">
         <div
-          className="w-full h-full rounded-xl overflow-hidden"
+          className="w-full h-full rounded-xl overflow-hidden flex items-center justify-center"
           style={{ border: '1.5px solid rgba(255,255,255,0.3)' }}
         >
-          <img
-            src={project.image}
-            alt={project.name}
-            className="w-full h-full"
-            style={{ objectFit: 'cover', objectPosition: 'center center' }}
-          />
+          {project.image ? (
+            <img
+              src={project.image}
+              alt={project.name}
+              className="w-full h-full"
+              style={{ objectFit: 'cover', objectPosition: 'center center' }}
+            />
+          ) : (
+            <span style={{ fontSize: '52px', filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.3))' }}>
+              {project.emoji}
+            </span>
+          )}
         </div>
       </div>
 
