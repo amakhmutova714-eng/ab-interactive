@@ -4,6 +4,7 @@ import { useLanguage } from '../context/LanguageContext'
 const WAVE_IMG = '/widget-wave.png'
 const IDLE_IMG = '/widget-idle.png'
 const WA_LINK = 'https://wa.me/77052506772'
+const MSG_INTERVAL = 5000
 const BOT_DELAY = 1200
 
 const RULES = [
@@ -72,17 +73,8 @@ const FALLBACK = {
   en: 'Not sure about that one 😅 Chat with Albina directly — she\'ll answer!',
 }
 
-const PLACEHOLDER = {
-  kz: 'Сұрақ жаз...',
-  ru: 'Напиши вопрос...',
-  en: 'Type a message...',
-}
-
-const WA_LABEL = {
-  kz: 'WhatsApp-та жалғастыру',
-  ru: 'Продолжить в WhatsApp',
-  en: 'Continue on WhatsApp',
-}
+const PLACEHOLDER = { kz: 'Сұрақ жаз...', ru: 'Напиши вопрос...', en: 'Type a message...' }
+const WA_LABEL = { kz: 'WhatsApp-та жалғастыру', ru: 'Продолжить в WhatsApp', en: 'Continue on WhatsApp' }
 
 function getBotReply(text, lang) {
   const lower = text.toLowerCase()
@@ -94,52 +86,99 @@ function getBotReply(text, lang) {
   return { text: FALLBACK[lang] ?? FALLBACK.en, wa: true }
 }
 
-export default function CharacterWidget() {
-  const { lang, content } = useLanguage()
-  const greeting = content.widget?.msgs?.[0] ?? 'Hello! 👋'
+// ── IDLE WIDGET ────────────────────────────────────────────────
+function IdleWidget({ msgs, onOpen, onClose }) {
+  const [msgIndex, setMsgIndex] = useState(0)
+  const [isWaving, setIsWaving] = useState(true)
+  const [textKey, setTextKey] = useState(0)
+  const [imgVisible, setImgVisible] = useState(true)
+  const msgsRef = useRef(msgs)
+  msgsRef.current = msgs
 
-  const [open, setOpen] = useState(false)
-  const [msgs, setMsgs] = useState([])
+  useEffect(() => {
+    setMsgIndex(0)
+    setTextKey((k) => k + 1)
+  }, [msgs])
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setMsgIndex((prev) => (prev + 1) % msgsRef.current.length)
+      setTextKey((k) => k + 1)
+      setImgVisible(false)
+      setTimeout(() => {
+        setIsWaving((w) => !w)
+        setImgVisible(true)
+      }, 200)
+    }, MSG_INTERVAL)
+    return () => clearInterval(timer)
+  }, [])
+
+  return (
+    <div className="fixed bottom-0 right-5 z-[9999] flex flex-col items-end" style={{ pointerEvents: 'none' }}>
+      {/* Bubble */}
+      <div className="mb-2 relative" style={{ pointerEvents: 'all' }}>
+        <button
+          onClick={onClose}
+          className="absolute -top-2.5 -right-2.5 w-6 h-6 rounded-full flex items-center justify-center text-white text-xs border-0 cursor-pointer z-10"
+          style={{ background: '#FF4FA3', boxShadow: '0 2px 8px rgba(255,79,163,.4)' }}
+        >✕</button>
+        <div
+          className="relative bg-white px-4 py-3 text-sm leading-relaxed"
+          style={{
+            border: '2px solid #FF4FA3',
+            borderRadius: '18px 18px 4px 18px',
+            boxShadow: '0 4px 20px rgba(255,79,163,.18)',
+            maxWidth: '220px', minWidth: '140px', color: '#1a1a2e',
+          }}
+        >
+          <span className="absolute" style={{ bottom: '-10px', right: '18px', borderWidth: '5px', borderStyle: 'solid', borderColor: '#FF4FA3 transparent transparent transparent' }} />
+          <p key={textKey} className="m-0" style={{ animation: 'abwFade .3s ease' }}>
+            {msgs[msgIndex] ?? ''}
+          </p>
+        </div>
+      </div>
+
+      {/* Character — click opens chat */}
+      <img
+        src={isWaving ? WAVE_IMG : IDLE_IMG}
+        alt="AB Assistant"
+        onClick={onOpen}
+        className="block cursor-pointer hover:scale-105"
+        style={{
+          width: '130px',
+          filter: 'drop-shadow(0 4px 14px rgba(0,0,0,.18))',
+          transition: 'transform .2s, opacity .2s',
+          opacity: imgVisible ? 1 : 0,
+          pointerEvents: 'all',
+        }}
+      />
+      <style>{`@keyframes abwFade{from{opacity:0}to{opacity:1}}`}</style>
+    </div>
+  )
+}
+
+// ── CHAT WINDOW ────────────────────────────────────────────────
+function ChatWindow({ lang, greeting, onClose }) {
+  const [chatMsgs, setChatMsgs] = useState([{ from: 'bot', text: greeting, wa: false }])
   const [input, setInput] = useState('')
   const [typing, setTyping] = useState(false)
   const [isWaving, setIsWaving] = useState(true)
   const endRef = useRef(null)
 
-  useEffect(() => {
-    if (open && msgs.length === 0) {
-      setMsgs([{ from: 'bot', text: greeting, wa: false }])
-    }
-  }, [open])
-
-  useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [msgs, typing])
+  useEffect(() => { endRef.current?.scrollIntoView({ behavior: 'smooth' }) }, [chatMsgs, typing])
 
   function send() {
     const text = input.trim()
     if (!text) return
     setInput('')
-    setMsgs((prev) => [...prev, { from: 'user', text }])
+    setChatMsgs((prev) => [...prev, { from: 'user', text }])
     setTyping(true)
     setTimeout(() => {
       const reply = getBotReply(text, lang)
-      setMsgs((prev) => [...prev, { from: 'bot', ...reply }])
+      setChatMsgs((prev) => [...prev, { from: 'bot', ...reply }])
       setIsWaving((w) => !w)
       setTyping(false)
     }, BOT_DELAY)
-  }
-
-  if (!open) {
-    return (
-      <button
-        onClick={() => setOpen(true)}
-        className="fixed bottom-4 right-4 z-[9999] cursor-pointer border-0 bg-transparent p-0"
-        style={{ filter: 'drop-shadow(0 4px 18px rgba(255,79,163,.4))' }}
-        title="Chat with AB Assistant"
-      >
-        <img src={WAVE_IMG} alt="AB Assistant" style={{ width: '88px', display: 'block' }} />
-      </button>
-    )
   }
 
   return (
@@ -148,71 +187,41 @@ export default function CharacterWidget() {
       style={{ width: '300px', borderRadius: '18px', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,.18)' }}
     >
       {/* Header */}
-      <div
-        className="flex items-center gap-3 px-4 py-3"
-        style={{ background: 'linear-gradient(135deg,#FF4FA3,#a855f7)' }}
-      >
+      <div className="flex items-center gap-3 px-4 py-3" style={{ background: 'linear-gradient(135deg,#FF4FA3,#a855f7)' }}>
         <img
           src={isWaving ? WAVE_IMG : IDLE_IMG}
           alt=""
-          style={{
-            width: '40px', height: '40px',
-            objectFit: 'cover', objectPosition: 'top center',
-            borderRadius: '50%', border: '2px solid rgba(255,255,255,.5)',
-            background: 'rgba(255,255,255,.1)',
-          }}
+          style={{ width: '40px', height: '40px', objectFit: 'cover', objectPosition: 'top center', borderRadius: '50%', border: '2px solid rgba(255,255,255,.5)' }}
         />
-        <div className="flex-1 min-w-0">
+        <div className="flex-1">
           <div className="text-white font-bold text-sm">AB Assistant</div>
           <div className="text-white/70 text-xs">● Online</div>
         </div>
-        <button
-          onClick={() => setOpen(false)}
-          className="text-white/80 hover:text-white border-0 bg-transparent cursor-pointer text-lg leading-none p-0"
-        >
-          ✕
-        </button>
+        <button onClick={onClose} className="text-white/80 hover:text-white border-0 bg-transparent cursor-pointer text-lg leading-none p-0">✕</button>
       </div>
 
       {/* Messages */}
-      <div
-        className="flex flex-col gap-2 p-3 overflow-y-auto"
-        style={{ height: '300px', background: '#f9f5ff' }}
-      >
-        {msgs.map((m, i) => (
+      <div className="flex flex-col gap-2 p-3 overflow-y-auto" style={{ height: '300px', background: '#f9f5ff' }}>
+        {chatMsgs.map((m, i) => (
           <div key={i} className={`flex flex-col ${m.from === 'user' ? 'items-end' : 'items-start'}`}>
             <div
               className="px-3 py-2 text-sm max-w-[82%] whitespace-pre-line"
-              style={
-                m.from === 'user'
-                  ? { background: '#FF4FA3', color: '#fff', borderRadius: '16px 16px 4px 16px' }
-                  : { background: '#fff', color: '#1a1a2e', borderRadius: '16px 16px 16px 4px', border: '1px solid #ede4ff' }
-              }
-            >
-              {m.text}
-            </div>
+              style={m.from === 'user'
+                ? { background: '#FF4FA3', color: '#fff', borderRadius: '16px 16px 4px 16px' }
+                : { background: '#fff', color: '#1a1a2e', borderRadius: '16px 16px 16px 4px', border: '1px solid #ede4ff' }}
+            >{m.text}</div>
             {m.wa && m.from === 'bot' && (
-              <a
-                href={WA_LINK}
-                target="_blank"
-                rel="noreferrer"
+              <a href={WA_LINK} target="_blank" rel="noreferrer"
                 className="mt-1 text-xs px-3 py-1.5 rounded-xl font-semibold no-underline flex items-center gap-1"
-                style={{ background: '#25D366', color: '#fff' }}
-              >
+                style={{ background: '#25D366', color: '#fff' }}>
                 💬 {WA_LABEL[lang] ?? WA_LABEL.en}
               </a>
             )}
           </div>
         ))}
-
         {typing && (
           <div className="flex items-start">
-            <div
-              className="px-4 py-2 text-base"
-              style={{ background: '#fff', borderRadius: '16px 16px 16px 4px', border: '1px solid #ede4ff', color: '#aaa', letterSpacing: '2px' }}
-            >
-              •••
-            </div>
+            <div className="px-4 py-2" style={{ background: '#fff', borderRadius: '16px 16px 16px 4px', border: '1px solid #ede4ff', color: '#aaa', letterSpacing: '2px', fontSize: '14px' }}>•••</div>
           </div>
         )}
         <div ref={endRef} />
@@ -228,19 +237,49 @@ export default function CharacterWidget() {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && send()}
         />
-        <button
-          onClick={send}
+        <button onClick={send}
           className="flex items-center justify-center border-0 cursor-pointer text-white"
-          style={{
-            width: '36px', height: '36px', minWidth: '36px',
-            borderRadius: '12px',
-            background: 'linear-gradient(135deg,#FF4FA3,#a855f7)',
-            fontSize: '16px',
-          }}
-        >
+          style={{ width: '36px', height: '36px', minWidth: '36px', borderRadius: '12px', background: 'linear-gradient(135deg,#FF4FA3,#a855f7)', fontSize: '16px' }}>
           ➤
         </button>
       </div>
     </div>
+  )
+}
+
+// ── ROOT ───────────────────────────────────────────────────────
+export default function CharacterWidget() {
+  const { lang, content } = useLanguage()
+  const msgs = content.widget?.msgs ?? []
+
+  // 'idle' | 'chat' | 'hidden'
+  const [mode, setMode] = useState('idle')
+
+  if (mode === 'hidden') {
+    return (
+      <button
+        onClick={() => setMode('idle')}
+        className="fixed bottom-5 right-5 z-[9999] w-14 h-14 rounded-full flex items-center justify-center text-2xl border-0 cursor-pointer"
+        style={{ background: 'linear-gradient(135deg,#FF4FA3,#a855f7)', boxShadow: '0 4px 16px rgba(255,79,163,.4)' }}
+      >🌸</button>
+    )
+  }
+
+  if (mode === 'chat') {
+    return (
+      <ChatWindow
+        lang={lang}
+        greeting={msgs[0] ?? 'Hello! 👋'}
+        onClose={() => setMode('idle')}
+      />
+    )
+  }
+
+  return (
+    <IdleWidget
+      msgs={msgs}
+      onOpen={() => setMode('chat')}
+      onClose={() => setMode('hidden')}
+    />
   )
 }
