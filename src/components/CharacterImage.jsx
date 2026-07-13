@@ -16,6 +16,7 @@ export default function CharacterImage({ variant = 'hero', className = '' }) {
       src={MASCOTS[variant]}
       alt="Albina mascot"
       className={`w-auto block select-none pointer-events-none drop-shadow-lg ${className}`}
+      style={{ mixBlendMode: 'multiply' }}
       draggable={false}
     />
   )
