@@ -6,6 +6,7 @@ import ChoosePath from './components/ChoosePath'
 import Projects from './components/Projects'
 import WhyWorkWithMe from './components/WhyWorkWithMe'
 import Contact from './components/Contact'
+import CharacterWidget from './components/CharacterWidget'
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
           <Contact />
         </div>
       </div>
+      <CharacterWidget />
     </LanguageProvider>
   )
 }

@@ -196,4 +196,15 @@ export const content = {
     copy: '© 2026 AB.interactive',
     sub: 'Made with ❤️ and code',
   },
+
+  widget: {
+    msgs: [
+      "Hi! Welcome to AB.interactive! 👋",
+      "I'm your digital assistant!",
+      "Looking for a project or service?",
+      "Scroll down to see my work!",
+      "Want to collaborate? Find me on Instagram: @ab.interactive 📸",
+      "Any questions? I'm here to help! 😊",
+    ],
+  },
 }
