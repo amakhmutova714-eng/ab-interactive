@@ -25,7 +25,7 @@ export default function ChoosePath() {
         <PixelAlien size={4} color="#E8448A" />
       </div>
 
-      <div className="max-w-[430px] mx-auto">
+      <div className="max-w-[430px] md:max-w-5xl mx-auto">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -36,7 +36,7 @@ export default function ChoosePath() {
             <h2 className="text-3xl font-black text-black-main">{content.choosePathTitle}</h2>
           </motion.div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 md:grid md:grid-cols-3 md:gap-5">
             {content.paths.map((path, i) => {
               const isOpen = open === path.id
 

@@ -17,7 +17,7 @@ export default function WhyWorkWithMe() {
         <PixelAlien size={5} color="#E8448A" />
       </div>
 
-      <div className="max-w-[430px] mx-auto">
+      <div className="max-w-[430px] md:max-w-5xl mx-auto">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -29,7 +29,7 @@ export default function WhyWorkWithMe() {
             <HeartIcon />
           </motion.div>
 
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 md:grid md:grid-cols-3 md:gap-4">
             {content.whyMe.map((item, i) => (
               <motion.div
                 key={i}

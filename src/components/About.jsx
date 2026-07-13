@@ -13,7 +13,7 @@ export default function About() {
 
   return (
     <section id="about" className="bg-white py-16 px-6">
-      <div className="max-w-[430px] mx-auto">
+      <div className="max-w-[430px] md:max-w-5xl mx-auto">
 
         {/* About Me */}
         <motion.div
@@ -41,7 +41,7 @@ export default function About() {
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
               >
-                <CharacterImage variant="about" className="h-44" />
+                <CharacterImage variant="about" className="h-44 md:h-56" />
               </motion.div>
             </motion.div>
           </div>
@@ -62,7 +62,7 @@ export default function About() {
             <FloatingHeartInline />
           </motion.div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {about.whatIDo.map((item, i) => (
               <motion.div
                 key={i}
